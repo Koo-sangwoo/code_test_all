@@ -44,6 +44,9 @@ package org.example;
  * photo[i]의 원소들은 중복된 값이 들어가지 않습니다.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 우선 name 배열과 yearning 배열의 인덱스를 비교해 리턴하는 함수를 제작한다.
  * 이중 for문으로 들어가야한다.
@@ -51,7 +54,7 @@ package org.example;
  * 2차 for문에서는 위에 제작한 함수를 통해 각 photo요소의 점수를 합하도록한다.
  */
 public class Main {
-    String[] name = {"may", "kein", "kain", "radi" };
+    static String[] name = {"may", "kein", "kain", "radi" };
     static int[] yearning = {5, 10, 1, 3};
 
     static String[][] photo = {
@@ -63,44 +66,40 @@ public class Main {
     public static void main(String[] args) {
       
         int[] answer = new int[photo.length]; // 최종값을 받는 배열
-        
+        Map<String,Integer> settingScore = settingNameAndYearning(name,yearning);
+
         // 최종적으로 answer변수에 값을 담는 for문
         for (int i = 0; i < photo.length; i++) {
-            int photoYearning = 0; // 해당 사진의 그리움 점수
-            // photo의 값을 계산하고 더하는 for문
+            int photoYearning = 0;
             for (int j = 0; j < photo[i].length; j++) {
-                // 그리움 값을 리턴받는 함수
-                // 해당 사람의 그리움 값을 사진 그리움 값에 추가
-                photoYearning += yearningThisPeople(photo[i][j],photo[i]);
-                System.out.println("=================================" );
+                photoYearning += findScore(photo[i][j], settingScore);
             }
-            System.out.println("photoYearning = " + photoYearning);
             answer[i] = photoYearning;
         }
 
-        for (int i = 0; i < answer.length; i++) {
-            System.out.println("answer = " + answer[i]);
+    }
+
+    // HashMap에서 점수를 찾아 없으면 0, 있으면 해당 점수를 리턴하게한다.
+    private static int findScore(String peopleName, Map<String,Integer> nameAndScore) {
+        if(nameAndScore.get(peopleName) == null){
+            return 0;
+        }else{
+            return nameAndScore.get(peopleName);
         }
     }
 
     /**
-     * 1차 오류, 사람이 없을때를 생각하지 않고
-     * 그저 List와 비교만함
-     * @param peopleName
-     * @param photoList
-     * @return
+     * 2차
+     * HashMap에 이름에 따른 그리움 점수를 세팅하고 간다.
      */
-   static public int yearningThisPeople(String peopleName, String[] photoList){
+   static public Map<String,Integer> settingNameAndYearning(String[] peopleList, int[] yearning){
+       Map<String, Integer> nameAndScore = new HashMap<>();
 
+       for (int i = 0; i < peopleList.length; i++) {
+           nameAndScore.put(peopleList[i],yearning[i]);
+       }
 
-        for (int i = 0; i < photoList.length; i++) {
-            System.out.println("peopleName = " + peopleName);
-            System.out.println("photoList[i] = " + photoList[i]);
-            if(peopleName.equals(photoList[i])){
-                System.out.println("yearning[i] = " + yearning[i]);
-                return yearning[i];
-            }
-        }
-        return 0;
+       return nameAndScore;
     }
+
 }
