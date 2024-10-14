@@ -22,6 +22,11 @@
 <h1>풀이</h1>
 <hr>
 
+- 인자로 주는 photos의 length에 맞춰 점수가 나와야한다. 가변형이 아닌 배열이기 때문에 해당 배열의 길이로 배열을 선언한다.
+~~~
+int[] answer = new int[photo.length]; // 최종값을 받는 배열
+~~~
+
 - 우선 사람 이름에 따른 그리움 점수를 가지는 Map에 데이터를 정리한다.
 ~~~
 static public Map<String,Integer> settingNameAndYearning(String[] peopleList, int[] yearning) {
